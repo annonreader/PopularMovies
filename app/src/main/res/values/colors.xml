@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="actionbar">#D8000000</color>
+    <color name="sky">#00BFA5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lightgrey">#BDBDBD</color>
+</resources>

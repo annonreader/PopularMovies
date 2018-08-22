@@ -38,6 +38,7 @@ public class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
 
     @Override
     protected void onStartLoading() {
+
         if(last!=null)
             deliverResult(last);
         else {
