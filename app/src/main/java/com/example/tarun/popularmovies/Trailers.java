@@ -13,9 +13,11 @@ class Trailers {
 
 
 
-    public String getIso31661() {
-        return iso31661;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getIso31661() {
+//        return iso31661;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setIso31661(String iso31661) {
         this.iso31661 = iso31661;
@@ -29,50 +31,62 @@ class Trailers {
         this.key = key;
     }
 
-    public String getName() {
-        return name;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getName() {
+//        return name;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getSite() {
-        return site;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getSite() {
+//        return site;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setSite(String site) {
         this.site = site;
     }
 
-    public Integer getSize() {
-        return size;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public Integer getSize() {
+//        return size;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setSize(Integer size) {
         this.size = size;
     }
 
-    public String getType() {
-        return type;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getType() {
+//        return type;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setType(String type) {
         this.type = type;
     }
 
 
-    public String getId() {
-        return id;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getId() {
+//        return id;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getIso6391() {
-        return iso6391;
-    }
+// --Commented out by Inspection START (18/09/18, 2:22 PM):
+//    public String getIso6391() {
+//        return iso6391;
+//    }
+// --Commented out by Inspection STOP (18/09/18, 2:22 PM)
 
     public void setIso6391(String iso6391) {
         this.iso6391 = iso6391;

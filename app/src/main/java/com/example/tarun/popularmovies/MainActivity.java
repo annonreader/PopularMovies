@@ -39,29 +39,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER=1;
     private static final String POSITION = "position";
     private static final String ACTIONBAR="actionbar";
-    private static  ArrayList<movie> data;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private static  ArrayList<movie> data;
     private  RecyclerView rv;
-    private static ArrayList<movie> fdata ;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private static ArrayList<movie> fdata ;
 
     private static final String CURRENT_LOADER="currentloader";
     private static String action;
     private static int currentloader;
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private static final String LOG_TAG = MainActivity.class.getSimpleName();
     // --Commented out by Inspection (6/19/18, 9:52 PM):private Toast mToast;
 
 
     //   private final MovieAsyncTask movieAsyncTask = new MovieAsyncTask();
 
 
-    private Toast toptoast;
-    private Toast poptoast;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private Toast toptoast;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private Toast poptoast;
 
     private boolean internet_connection() {
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<Trailers> trailerList;
     private static final String YOUTUBE_VIDEO_BASE_URL = "https://www.youtube.com";
     private static final String YOUTUBE_IMAGE_BASE_URL = "https://img.youtube.com";
@@ -24,7 +24,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     private static final String YOUTUBE_VIDEO_Query_Parameter = "v";
     private static final String YOUTUBE_IMAGE_PATH = "vi";
     private static final String YOUTUBE_IMAGE_POSTFIX = "0.jpg";
-    private String button;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private String button;
 
     public String sendbutton()
     {
@@ -66,7 +66,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imageView;
+        final ImageView imageView;
         private Trailers trailer;
 
         ViewHolder(View itemView) {

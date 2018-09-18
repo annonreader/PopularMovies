@@ -40,7 +40,7 @@ class TrailerLoader extends AsyncTaskLoader<ArrayList<Trailers>> {
     public ArrayList<Trailers> loadInBackground() {
 
         String rawurl = "https://api.themoviedb.org/3/movie/";
-        if(rawurl ==null || TextUtils.isEmpty(rawurl))
+        if(TextUtils.isEmpty(rawurl))
             return null;
         String jsonresponse;
         try {

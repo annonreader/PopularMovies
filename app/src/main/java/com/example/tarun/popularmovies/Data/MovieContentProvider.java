@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Objects;
+
 import static com.example.tarun.popularmovies.Data.TaskContract.MovieEntry.TABLE_NAME;
 
 public class MovieContentProvider extends ContentProvider {
@@ -61,7 +63,7 @@ public class MovieContentProvider extends ContentProvider {
                 break;
 
         }
-        retcursor.setNotificationUri(getContext().getContentResolver(),uri);
+        retcursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(),uri);
         return retcursor;
     }
 
@@ -95,7 +97,7 @@ public class MovieContentProvider extends ContentProvider {
                     throw new UnsupportedOperationException("unknown uri "+uri);
         }
 
-        getContext().getContentResolver().notifyChange(uri,null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri,null);
         return returnuri;
     }
 
@@ -115,7 +117,7 @@ public class MovieContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("delete is not supported for :" + uri);
         }
         if (rowDeleted != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         return rowDeleted;
 

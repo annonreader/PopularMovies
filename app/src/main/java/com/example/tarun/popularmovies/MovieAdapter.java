@@ -2,6 +2,7 @@ package com.example.tarun.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,25 +15,26 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
-    private static final String EXTRA_MOVIE = "movie";
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private static final String EXTRA_MOVIE = "movie";
 
-    private List<movie> movies;
-    private Context context;
+    private final List<movie> movies;
+    private final Context context;
 
     public MovieAdapter(Context context, List<movie> movies) {
         this.movies = movies;
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.recyclervw, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder holder, int position) {
         movie currentMovie = movies.get(position);
         Picasso.with(context)
                 .load(FavouriteAdapter.urlStringFromPosterPath(currentMovie.getPoster()))
@@ -53,7 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        final ImageView imageView;
 
         private movie mo;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +16,12 @@ import com.example.tarun.popularmovies.Data.TaskContract;
 import com.squareup.picasso.Picasso;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
-    private static final String EXTRA_MOVIE = "movie";
-    private Context context;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private static final String EXTRA_MOVIE = "movie";
+    private final Context context;
     private Cursor cursor;
     private static final String POSTER_SIZE = "w500";
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
-    public  ImageView myImageView;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):public  ImageView myImageView;
 
     public FavouriteAdapter(Context context) {
         this.context = context;
@@ -33,14 +34,15 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 .appendEncodedPath(imagePath)
                 .build().toString();
     }
+    @NonNull
     @Override
-    public FavouriteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavouriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recyclervw, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(FavouriteAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavouriteAdapter.ViewHolder holder, int position) {
         if (cursor == null || cursor.getCount() == 0) {
             return;
         }
@@ -71,7 +73,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView myImageView;
+        private final ImageView myImageView;
 
         ViewHolder(View itemView) {
             super(itemView);

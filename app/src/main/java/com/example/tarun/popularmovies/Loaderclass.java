@@ -30,7 +30,7 @@ class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
 
     public Loaderclass(Context context,String url) {
         super(context);
-        this.rawurl = url;
+        rawurl = url;
     }
 
     @Override

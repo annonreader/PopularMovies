@@ -30,16 +30,18 @@ import static com.example.tarun.popularmovies.Data.TaskContract.MovieEntry.*;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
     // --Commented out by Inspection (6/19/18, 9:52 PM):private static final String LOG_TAG = DetailActivity.class.getSimpleName();
-    private Toast mToast;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private Toast mToast;
     private static final int TRAILER_LOADER = 20;
     private TrailerAdapter trailerAdapter;
     private RecyclerView trailerRecyclerView;
-    private Context context;
+    // --Commented out by Inspection (18/09/18, 2:22 PM):private Context context;
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
+    // --Commented out by Inspection (18/09/18, 2:25 PM):private Toast mToast;
 
-    private movie m = new movie();
+    private final movie m = new movie();
     private  boolean favourite;
     private String movieid;
+    Toast mToast;
     // --Commented out by Inspection (6/19/18, 9:52 PM):TextView textView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,7 +108,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         {
             id=
         }*/
-
         final ImageView fav = findViewById(R.id.fav);
         if(favourite)
             fav.setImageResource(R.drawable.heart_on);
