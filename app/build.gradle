@@ -19,7 +19,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'MyMovieApiKey', '"f5d5dfc6d8e412984b1a6f13607a9c46"'
+        it.buildConfigField 'String', 'MyMovieApiKey', '" "'
     }
 }
 

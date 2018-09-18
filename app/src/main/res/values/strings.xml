@@ -15,4 +15,5 @@
     <string name="withinternet">Please connect to Internet and hit refresh</string>
     <string name="trailersrec">Trailers</string>
     <string name="rev">Reviews</string>
+    <string name="norev">No Reviews</string>
 </resources>

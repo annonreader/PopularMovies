@@ -9,6 +9,16 @@ class movie {
     private String mRating;
     private String mTitle;
     private String mid;
+    private String backdrop;
+
+    public String getBackdrop() {
+        return backdrop;
+    }
+
+    public void setBackdrop(String backdrop) {
+        this.backdrop = backdrop;
+    }
+
     // --Commented out by Inspection START (6/19/18, 9:52 PM):
 //    public movie(String id,String posterpath)
 //    {

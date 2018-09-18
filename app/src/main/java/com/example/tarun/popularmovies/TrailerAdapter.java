@@ -29,8 +29,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     public String sendbutton()
     {
         Trailers load;
-        String videoUrl = youTubeVideoUrlBuilder(trailerList.get(0).getKey());
-        return  videoUrl;
+        return youTubeVideoUrlBuilder(trailerList.get(0).getKey());
     }
     public TrailerAdapter(Context context) {
         this.context = context;

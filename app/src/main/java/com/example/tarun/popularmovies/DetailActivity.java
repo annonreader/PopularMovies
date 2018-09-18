@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,11 @@ import android.widget.Toast;
 import com.example.tarun.popularmovies.Data.TaskContract;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.tarun.popularmovies.Data.TaskContract.MovieEntry.*;
 
@@ -34,6 +39,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final int TRAILER_LOADER = 20;
     private TrailerAdapter trailerAdapter;
     private RecyclerView trailerRecyclerView;
+    RecyclerView reviewRecyclerView;
+    private ReviewAdapter reviewAdapter;
+    TextView empty;
+
+    private static final int REVIEW_LOADER = 21;
+
     // --Commented out by Inspection (18/09/18, 2:22 PM):private Context context;
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
     // --Commented out by Inspection (18/09/18, 2:25 PM):private Toast mToast;
@@ -42,6 +53,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private  boolean favourite;
     private String movieid;
     Toast mToast;
+    private String backdrop;
+    ImageView frameLayout;
     // --Commented out by Inspection (6/19/18, 9:52 PM):TextView textView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,9 +67,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         TextView rating;
         final TextView overview;
         final ImageView movieposter;
+         empty = findViewById(R.id.empty_review_tv);
+   //      FrameLayout frameLayout = findViewById(R.id.frame);
 
 
         trailerRecyclerView = findViewById(R.id.trailerrecycle);
+        reviewRecyclerView = findViewById(R.id.reviewrecycle);
 
         Intent receive = getIntent();
         if (receive.hasExtra("id")) {
@@ -103,6 +119,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             overview = findViewById(R.id.lasttext);
             overview.setText(summary);
         }
+        if(receive.hasExtra("backdrop"))
+        {
+         backdrop = receive.getStringExtra("backdrop");
+         m.setBackdrop(backdrop);
+         Log.d("back",backdrop);
+            frameLayout = findViewById(R.id.iv_movie_poster);
+            Picasso.with(this)
+                    .load(FavouriteAdapter.urlStringFromBackgroundPath(m.getBackdrop()))
+                    .placeholder(R.drawable.ic_image)
+                    .error(R.drawable.brokenimage)
+                    .into(frameLayout);
+        }
   /*      String id="";
         if(receive.hasExtra("id"))
         {
@@ -140,12 +168,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 String description = m.getmOverview();
                 String poster = m.getPoster();
                 String id = m.getId();
+                String backdrop = m.getBackdrop();
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_MOVIE_OVERVIEW, description);
                 values.put(COLUMN_MOVIE_VOTE_AVERAGE, rating);
                 values.put(COLUMN_MOVIE_RELEASE_DATE, date);
                 values.put(COLUMN_MOVIE_TITLE, title);
-
+                values.put(COLUMN_MOVIE_BACKDROP,backdrop);
                 values.put(COLUMN_MOVIE_POSTER_PATH, poster);
 
                 values.put(COLUMN_MOVIE_ID, id);
@@ -166,6 +195,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             trailerRecyclerView.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
             trailerRecyclerView.setAdapter(trailerAdapter);
         }
+
+        if(internet_connection())
+        {
+            getLoaderManager().initLoader(REVIEW_LOADER, null, DetailActivity.this).forceLoad();
+            reviewAdapter = new ReviewAdapter(this);
+
+            reviewRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            reviewRecyclerView.setAdapter(reviewAdapter);
+        }
+
+
+
         Button b = findViewById(R.id.button_watch_trailer);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,6 +342,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             //movie m = new movie();
             return new TrailerLoader(this,m.getId());
         }
+         if (id == REVIEW_LOADER) {
+            return new ReviewLoader(this,m.getId());
+        }
         return null;
     }
 
@@ -310,22 +354,23 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         int id = loader.getId();
         if (id == TRAILER_LOADER) {
             trailerAdapter.setTrailerList((List<Trailers>) o);
- /*           Button b = findViewById(R.id.button_watch_trailer);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-         //           trailerAdapter.sendbutton();
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-            //        String videoUrl = youTubeVideoUrlBuilder(trailer.getKey());
-             //       button = videoUrl;
-                    intent.setData(Uri.parse(trailerAdapter.sendbutton()));
-                    if (intent.resolveActivity(context.getPackageManager()) != null) {
-                        context.startActivity(intent);
-                    }
-                }
-            });*/
+        } else if (id == REVIEW_LOADER) {
+            ArrayList<Review> reviews = (ArrayList<Review>) o;
+            if (reviews != null && reviews.size() > 0) {
+                List<String> reviewContent = new ArrayList<>();
+                List<String> author = new ArrayList<>();
+                empty.setVisibility(View.INVISIBLE);
+                reviewContent = getReviewContent(reviews);
+                author = getauthorContent(reviews);
+                reviewAdapter.setAuthors(author);
+                reviewAdapter.setReviews(reviewContent);
+            } else {
+                empty.setVisibility(View.VISIBLE);
+            }
         }
     }
+
+
 
     @Override
     public void onLoaderReset(Loader loader) {
@@ -333,15 +378,34 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (id == TRAILER_LOADER) {
             trailerAdapter.setTrailerList(null);
         }
+        else if (id == REVIEW_LOADER) {
+            reviewAdapter.setReviews(null);
+        }
     }
     private boolean internet_connection() {
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
+        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
+        return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-        return isConnected;
+    }
+
+    private ArrayList<String> getReviewContent(ArrayList<Review> reviews) {
+        if (reviews == null || reviews.size() == 0) return null;
+        ArrayList<String> reviewContent = new ArrayList<>();
+        for (int i = 0; i < reviews.size(); i++) {
+            reviewContent.add(reviews.get(i).getContent());
+        }
+        return reviewContent;
+    }
+    private ArrayList<String> getauthorContent(ArrayList<Review> reviews) {
+        if (reviews == null || reviews.size() == 0) return null;
+        ArrayList<String> reviewContent = new ArrayList<>();
+        for (int i = 0; i < reviews.size(); i++) {
+            reviewContent.add(reviews.get(i).getAuthor());
+        }
+        return reviewContent;
     }
 
 }

@@ -20,6 +20,9 @@ class NetworkUtils  {
     //   final static String MOVIE_BASE="https://api.themoviedb.org/3/movie/top_rated?";
     private final static String API_PARAM="api_key";
     private final static String VIDEOS="videos";
+    private final static String REVIEWS="reviews";
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+    private static final String BACKGROUND_IMAGE_SIZE = "w342";
 
     //////////////////
 
@@ -64,7 +67,27 @@ class NetworkUtils  {
         return url;
     }
 
+    public static URL buildreview(String reviewurl,String id)
+    {
+        Uri trail = Uri.parse(reviewurl)
+                .buildUpon()
+                .appendEncodedPath(id)
+                .appendEncodedPath(REVIEWS).appendQueryParameter(API_PARAM,BuildConfig.MyMovieApiKey)
+                .build();
+        URL url = null;
+
+        try {
+            url = new URL(trail.toString());
+            Log.d(LOG_TAG,trail.toString());
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        return url;
+    }
     //connecting to the internet
+
 
     public static String makehttprequest(URL url)throws IOException
     {

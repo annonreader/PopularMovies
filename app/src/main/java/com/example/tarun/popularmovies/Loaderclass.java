@@ -66,6 +66,7 @@ class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
         String title;
         String releasedate;
         String overview;
+        String backdrop;
         try {
             JSONObject jobj = new JSONObject(jsonresponse);
             JSONArray result = jobj.getJSONArray("results");
@@ -79,7 +80,9 @@ class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
                 title = firstresult.getString("title");
                 releasedate = firstresult.getString("release_date");
                 overview = firstresult.getString("overview");
+                backdrop = firstresult.getString("backdrop_path");
 
+                contract.setBackdrop(backdrop);
                 contract.setId(id);
                 contract.setPoster(posterpath);
                 contract.setmRating(rating.toString());

@@ -21,6 +21,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     private Cursor cursor;
     private static final String POSTER_SIZE = "w500";
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+    private static final String BACKGROUND_IMAGE_SIZE = "w500";
+
     // --Commented out by Inspection (18/09/18, 2:22 PM):public  ImageView myImageView;
 
     public FavouriteAdapter(Context context) {
@@ -31,6 +33,14 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         return Uri.parse(IMAGE_BASE_URL)
                 .buildUpon()
                 .appendEncodedPath(POSTER_SIZE)
+                .appendEncodedPath(imagePath)
+                .build().toString();
+    }
+
+    public static String urlStringFromBackgroundPath(String imagePath) {
+        return Uri.parse(IMAGE_BASE_URL)
+                .buildUpon()
+                .appendEncodedPath(BACKGROUND_IMAGE_SIZE)
                 .appendEncodedPath(imagePath)
                 .build().toString();
     }
@@ -92,7 +102,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                     detail.putExtra("overview",fdata.getmOverview());
                     detail.putExtra("rating",fdata.getmRating());
                     detail.putExtra("title",fdata.getmTitle());
-
+                    detail.putExtra("backdrop",fdata.getBackdrop());
                     context.startActivity(detail);
                 }
             });
@@ -103,6 +113,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         cursor.moveToPosition(adapterPosition);
         movie movie = new movie();
+        String backdrop = cursor.getString(cursor.getColumnIndexOrThrow((TaskContract.MovieEntry.COLUMN_MOVIE_BACKDROP)));
+        movie.setBackdrop(backdrop);
+
+
         String movieId = cursor.getString(cursor.getColumnIndexOrThrow(TaskContract.MovieEntry.COLUMN_MOVIE_ID));
         movie.setId((movieId));
 

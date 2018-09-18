@@ -17,8 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -62,9 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
+        return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-        return isConnected;
     }
 
     @Override
@@ -249,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    @NonNull
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
 
@@ -279,7 +275,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     TaskContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
                     TaskContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
                     TaskContract.MovieEntry.COLUMN_MOVIE_OVERVIEW,
-                    TaskContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH
+                    TaskContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH,
+                    TaskContract.MovieEntry.COLUMN_MOVIE_BACKDROP
             };
             return new CursorLoader(this, TaskContract.MovieEntry.CONTENT_URI, projection, null, null, null);
         }

@@ -77,6 +77,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                     detail.putExtra("overview",mo.getmOverview());
                     detail.putExtra("rating",mo.getmRating());
                     detail.putExtra("title",mo.getmTitle());
+                    detail.putExtra("backdrop",mo.getBackdrop());
                     context.startActivity(detail);
                 }
             });

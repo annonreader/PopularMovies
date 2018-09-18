@@ -2,6 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:layout="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,8 +26,13 @@ android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="false"
-            android:background="@color/sky"
             android:minHeight="160dp">
+        <ImageView
+            android:id="@+id/iv_movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+             />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -33,19 +40,9 @@ android:layout_width="match_parent"
                 android:id="@+id/backdrop"
                 tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/moviename"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:textColor="@color/white"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                tools:text="Intersteller" />
 
         </FrameLayout>
+
 
         <LinearLayout
             android:id="@+id/line1"
@@ -102,12 +99,13 @@ android:layout_width="match_parent"
 
                     />
 
-
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
                 <Button
                     android:id="@+id/button_watch_trailer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:enabled="true"
                     android:text="@string/trailers"
                     android:background="@android:color/transparent"
@@ -115,19 +113,33 @@ android:layout_width="match_parent"
                     android:theme="@style/Button.ColorPrimary"
                     tools:text="watch trailer" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
+
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/moviename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/line1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+
+            android:textSize="35sp"
+            android:textStyle="bold"
+            tools:text="Intersteller" />
         <TextView
             android:id="@+id/lasttext"
             android:layout_width="match_parent"
-            android:layout_below="@id/line1"
+            android:layout_below="@id/moviename"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
+            android:textSize="15sp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:textAlignment="viewStart"
@@ -159,7 +171,9 @@ android:layout_width="match_parent"
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/trailerrecycle" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/trailerrecycle"
             android:layout_width="match_parent"
@@ -171,24 +185,21 @@ android:layout_width="match_parent"
 
         </android.support.v7.widget.RecyclerView>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+
         <TextView
             android:id="@+id/rev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/trailerrecycle"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/trailerrecycle"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="bottom"
+            android:text="@string/rev"
             android:textColor="@color/cardview_dark_background"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="@string/rev" />
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_below="@id/rev"
@@ -200,6 +211,17 @@ android:layout_width="match_parent"
             tools:ignore="MissingConstraints"
             >
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_below="@id/rev"
+            android:id="@+id/empty_review_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/norev"
+            android:textStyle="normal"
+            android:textSize="10sp"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

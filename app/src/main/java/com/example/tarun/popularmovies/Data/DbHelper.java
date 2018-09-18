@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "movies.db";
 
     public DbHelper(Context context) {
@@ -20,6 +20,7 @@ class DbHelper extends SQLiteOpenHelper {
                 TaskContract.MovieEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
                 TaskContract.MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL, " +
                 TaskContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH + " TEXT NOT NULL, " +
+                TaskContract.MovieEntry.COLUMN_MOVIE_BACKDROP + " TEXT NOT NULL, " +
                 TaskContract.MovieEntry.COLUMN_MOVIE_OVERVIEW + " TEXT NOT NULL, " +
                 TaskContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE + " TEXT NOT NULL, " +
                 TaskContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL " +
