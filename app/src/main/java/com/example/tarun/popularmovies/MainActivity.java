@@ -2,15 +2,12 @@ package com.example.tarun.popularmovies;
 
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import android.app.LoaderManager;
@@ -43,18 +39,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER=1;
     private static final String POSITION = "position";
     private static final String ACTIONBAR="actionbar";
-//    private static String jsonresonse;
-    private MovieAdapter adapter;
     private static  ArrayList<movie> data;
-    private static RecyclerView rv;
+    private  RecyclerView rv;
     private static ArrayList<movie> fdata ;
-    private FavouriteAdapter mAdapter;
 
-    private ProgressBar progressBar;
     private static final String CURRENT_LOADER="currentloader";
     private static String action;
     private static int currentloader;
-    private static String urlpath;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     // --Commented out by Inspection (6/19/18, 9:52 PM):private Toast mToast;
@@ -66,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Toast toptoast;
     private Toast poptoast;
 
-    boolean internet_connection() {
+    private boolean internet_connection() {
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -75,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if(savedInstanceState == null)
         {
             currentloader=loadervariable;
-            urlpath=popurl;
+            String urlpath = popurl;
             action="Popular Movies";
         }
          rv = findViewById(R.id.recycle);
@@ -239,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void setupRecyclerAcapter(ArrayList<movie> data, int id)
     {
+        MovieAdapter adapter;
         if(id==1) {
             adapter = new MovieAdapter(MainActivity.this, data);
             rv.setAdapter(adapter);
@@ -250,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         else if(id==2)
         {
-            mAdapter = new FavouriteAdapter(this);
+            FavouriteAdapter mAdapter = new FavouriteAdapter(this);
             rv.setAdapter(mAdapter);
             mAdapter.swapCursor((Cursor) data);
 

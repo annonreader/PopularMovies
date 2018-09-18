@@ -1,7 +1,6 @@
 package com.example.tarun.popularmovies;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -12,19 +11,17 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import android.app.LoaderManager;
+
 import android.content.AsyncTaskLoader;
 
 
 
-public class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
+class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
 
     private static  ArrayList<movie> last ;
- //   private static String rawurl;
-    private static String jsonresponse;
     private static final String LOG_TAG = Loaderclass.class.getSimpleName();
     private static  String rawurl;
-
+    private String jsonresponse;
 
    /* public void receiveurl(String url)
     {
@@ -53,6 +50,7 @@ public class Loaderclass extends AsyncTaskLoader<ArrayList<movie>> {
 
         if(rawurl==null || TextUtils.isEmpty(rawurl))
             return null;
+        // jsonresponse;
         try {
             URL geturl = NetworkUtils.buildUrl(rawurl);
 

@@ -1,24 +1,22 @@
 package com.example.tarun.popularmovies;
 
 import android.content.AsyncTaskLoader;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.tarun.popularmovies.Data.TaskContract.MovieEntry;
 
 import static android.content.ContentValues.TAG;
 
-public class Favs extends AsyncTaskLoader<Cursor> {
+class Favs extends AsyncTaskLoader<Cursor> {
 
 
     public Favs(Context context) {
         super(context);
     }
 
-    Cursor mTaskData = null;
+    private Cursor mTaskData = null;
 
     @Override
     protected void onStartLoading() {

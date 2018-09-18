@@ -1,16 +1,22 @@
 package com.example.tarun.popularmovies;
 
-import android.arch.persistence.room.EntityDeletionOrUpdateAdapter;
+import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.Entity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,25 +24,22 @@ import android.widget.Toast;
 import com.example.tarun.popularmovies.Data.TaskContract;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import static com.example.tarun.popularmovies.Data.TaskContract.MovieEntry.*;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
     // --Commented out by Inspection (6/19/18, 9:52 PM):private static final String LOG_TAG = DetailActivity.class.getSimpleName();
     private Toast mToast;
+    private static final int TRAILER_LOADER = 20;
+    private TrailerAdapter trailerAdapter;
+    private RecyclerView trailerRecyclerView;
+    private Context context;
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
-
-    movie m = new movie();
-
+    private movie m = new movie();
+    private  boolean favourite;
+    private String movieid;
     // --Commented out by Inspection (6/19/18, 9:52 PM):TextView textView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +53,18 @@ public class DetailActivity extends AppCompatActivity {
         final TextView overview;
         final ImageView movieposter;
 
+
+        trailerRecyclerView = findViewById(R.id.trailerrecycle);
+
         Intent receive = getIntent();
         if (receive.hasExtra("id")) {
             String id = receive.getStringExtra("id");
+            movieid = id;
+            favourite = checkInDb(id);
+
             m.setId(id);
         }
+
         if (receive.hasExtra("image")) {
             String poster = receive.getStringExtra("image");
             m.setPoster(poster);
@@ -97,21 +107,30 @@ public class DetailActivity extends AppCompatActivity {
             id=
         }*/
 
-        ImageView fav = findViewById(R.id.fav);
+        final ImageView fav = findViewById(R.id.fav);
+        if(favourite)
+            fav.setImageResource(R.drawable.heart_on);
+        else
+            fav.setImageResource(R.drawable.heart_off);
         fav.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mToast != null) {
                     mToast.cancel();
                 }
                 ImageView im = findViewById(R.id.fav);
+                if(favourite)
+                {
+                    fav.setImageResource(R.drawable.heart_off);
+                    favourite = false;
+                    deleteFromDb();
+                    Toast.makeText(getApplicationContext(), "DELETE from DB", Toast.LENGTH_LONG).show();
+                }
+                else{
                 onSaveClicked();
                 im.setImageResource(R.drawable.heart_on);
-                String toastmessage = "Movie added to favourite";
-                mToast = Toast.makeText(getApplicationContext(), toastmessage, Toast.LENGTH_SHORT);
-                mToast.show();
+                favourite = true;
+                }
             }
-
-
             private void onSaveClicked() {
                 // DetailActivity da = new DetailActivity();
                 String title = m.getmTitle();
@@ -139,10 +158,61 @@ public class DetailActivity extends AppCompatActivity {
         });
         //      detailinfo.execute(R.string.api_base_url+);
 
+        if(internet_connection()) {
+            getLoaderManager().initLoader(TRAILER_LOADER, null, DetailActivity.this).forceLoad();
+            trailerAdapter = new TrailerAdapter(DetailActivity.this);
 
+            trailerRecyclerView.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            trailerRecyclerView.setAdapter(trailerAdapter);
+        }
+        Button b = findViewById(R.id.button_watch_trailer);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //           trailerAdapter.sendbutton();
+                if(!internet_connection())
+                {
+                    Toast mToast = Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_SHORT);
+                    mToast.show();
+                    return;
+                }
+                Log.v(LOG_TAG,trailerAdapter.sendbutton());
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                        String videoUrl = trailerAdapter.sendbutton();
+                        if(videoUrl.isEmpty())
+                        {
+                            Toast mToast = Toast.makeText(getApplicationContext(),"Trailer not available",Toast.LENGTH_SHORT);
+                            mToast.show();
+                            return;
+                        }
+
+                //       button = videoUrl;
+                intent.setData(Uri.parse(videoUrl));
+                if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+                    getApplicationContext().startActivity(intent);
+                }
+            }
+        });
 
     }
-    public void setrating (String rating)
+
+
+    private void deleteFromDb() {
+        getContentResolver().delete(TaskContract.MovieEntry.CONTENT_URI.buildUpon().appendEncodedPath(movieid).build(), null, null);
+    }
+
+    private boolean checkInDb(String movieId) {
+        String queryUri = TaskContract.MovieEntry.CONTENT_URI + "/" + movieId;
+        String[] projection = new String[]{movieId};
+        Cursor cursor = getContentResolver().query(Uri.parse(queryUri), projection, null, null, null);
+        if (cursor != null && cursor.moveToNext()) {
+            cursor.close();
+            return true;
+        }
+        return false;
+    }
+
+    private void setrating(String rating)
     {
         float rat = Float.valueOf(rating);
         rat /= 2;
@@ -223,4 +293,54 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle bundle) {
+        if (id == TRAILER_LOADER) {
+            //movie m = new movie();
+            return new TrailerLoader(this,m.getId());
+        }
+        return null;
+    }
+
+
+    @Override
+    public void onLoadFinished(Loader loader, Object o) {
+        int id = loader.getId();
+        if (id == TRAILER_LOADER) {
+            trailerAdapter.setTrailerList((List<Trailers>) o);
+ /*           Button b = findViewById(R.id.button_watch_trailer);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+         //           trailerAdapter.sendbutton();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+            //        String videoUrl = youTubeVideoUrlBuilder(trailer.getKey());
+             //       button = videoUrl;
+                    intent.setData(Uri.parse(trailerAdapter.sendbutton()));
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    }
+                }
+            });*/
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+        int id = loader.getId();
+        if (id == TRAILER_LOADER) {
+            trailerAdapter.setTrailerList(null);
+        }
+    }
+    private boolean internet_connection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
 }

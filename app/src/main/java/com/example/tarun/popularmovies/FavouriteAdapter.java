@@ -73,7 +73,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView myImageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             myImageView = itemView.findViewById(R.id.image);
 

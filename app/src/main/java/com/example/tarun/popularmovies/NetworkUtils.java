@@ -19,12 +19,14 @@ class NetworkUtils  {
     //    final static String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/popular?";
     //   final static String MOVIE_BASE="https://api.themoviedb.org/3/movie/top_rated?";
     private final static String API_PARAM="api_key";
+    private final static String VIDEOS="videos";
 
     //////////////////
 
     public static URL buildUrl(String movieurl)
     {
 
+        Log.v("inside buildurl","movieurl");
         Uri builturi = Uri.parse(movieurl).buildUpon()
                 .appendQueryParameter(API_PARAM,BuildConfig.MyMovieApiKey)
                 .build();
@@ -34,6 +36,26 @@ class NetworkUtils  {
         try {
             url = new URL(builturi.toString());
             Log.d(LOG_TAG,builturi.toString());
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    public static URL buildtrailer(String trailerurl,String id)
+    {
+        Uri trail = Uri.parse(trailerurl)
+                .buildUpon()
+                .appendEncodedPath(id)
+                .appendEncodedPath(VIDEOS).appendQueryParameter(API_PARAM,BuildConfig.MyMovieApiKey)
+                .build();
+        URL url = null;
+
+        try {
+            url = new URL(trail.toString());
+            Log.d(LOG_TAG,trail.toString());
         }
         catch (MalformedURLException e)
         {

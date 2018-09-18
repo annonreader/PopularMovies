@@ -1,16 +1,18 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Movie Review</string>
     <string name = "Pop_Movies">Popular Movies</string>
     <string name="Top_Rated">Top Rated</string>
     <string name="Popular">Popular</string>
     <string name="Rating">Rating</string>
     <string name="MovieDetail">MovieDetail</string>
-    <string name="imageurl" translatable="false">http://image.tmdb.org/t/p/w500/</string>
-    <string name="try_again">Reconnect</string>
+    <string name="imageurl" translatable="false" tools:keep="@string/imageurl">http://image.tmdb.org/t/p/w500/</string>
+    <string name="try_again" tools:keep="@string/try_again">Reconnect</string>
     <string name="favs">Favourites</string>
     <string name="trailers">Watch Trailer</string>
-    <string name = "nomovies">No Movies</string>
-    <string name="addmovies">You can add here your favourite movies</string>
+    <string name = "nomovies" tools:keep="@string/nomovies">No Movies</string>
+    <string name="addmovies" tools:keep="@string/addmovies">You can add here your favourite movies</string>
     <string name = "nointernet">No Internet Connection</string>
     <string name="withinternet">Please connect to Internet and hit refresh</string>
+    <string name="trailersrec">Trailers</string>
+    <string name="rev">Reviews</string>
 </resources>
